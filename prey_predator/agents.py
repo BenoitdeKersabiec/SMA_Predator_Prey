@@ -42,7 +42,9 @@ class Sheep(RandomWalker):
                     wolves.append((x, y + 1))
                     wolves.append((x + 1, y + 1))
 
-        next_moves = list(set(next_moves).difference(set(wolves)))
+        life_moves = list(set(next_moves).difference(set(wolves)))
+        if len(life_moves) > 0:
+            next_moves = life_moves
         # Seek for grass
         random.shuffle(next_moves)
         for move in next_moves:
