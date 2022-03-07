@@ -47,23 +47,20 @@ def wolf_sheep_portrayal(agent):
     return portrayal
 
 
+model_params = {
+    "initial_sheep": UserSettableParameter("slider", "initial_sheep", 25, 0, 100),
+    "initial_wolves": UserSettableParameter("slider", "initial_wolves", 3, 0, 25),
+    "sheep_reproduce": UserSettableParameter("slider", "sheep_reproduce", 0.1, 0, 1, step=1e-3),
+    "wolf_reproduce": UserSettableParameter("slider", "wolf_reproduce", 0.1, 0, 1, step=1e-3),
+    "sheep_gain_from_food": UserSettableParameter("slider", "sheep_gain_from_food", 20, 0, 50),
+    "wolf_gain_from_food": UserSettableParameter("slider", "wolf_gain_from_food", 10, 0, 50),
+    "grass_regrowth_time": UserSettableParameter("slider", "grass_regrowth_time", 30, 0, 50),
+}
+
 canvas_element = CanvasGrid(wolf_sheep_portrayal, 20, 20, 500, 500)
 chart_element = ChartModule(
-    [{"Label": "Wolves", "Color": "#AA0000"}, {"Label": "Sheep", "Color": "#666666"}]
+    [{"Label": "Wolves (x3)", "Color": "#AA0000"}, {"Label": "Sheep", "Color": "#666666"}]
 )
-
-model_params = {
-    "height": 20,
-    "width": 20,
-    "initial_sheep": 100,
-    "initial_wolves": 10,
-    "sheep_reproduce": 0.2,
-    "wolf_reproduce": 0.03,
-    "wolf_gain_from_food": 5,
-    "grass": False,
-    "grass_regrowth_time": 15,
-    "sheep_gain_from_food": 20,
-}
 
 server = ModularServer(
     WolfSheep, [canvas_element, chart_element], "Prey Predator Model", model_params
