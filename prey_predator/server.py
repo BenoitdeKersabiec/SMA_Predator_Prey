@@ -48,18 +48,25 @@ def wolf_sheep_portrayal(agent):
 
 
 model_params = {
-    "initial_sheep": UserSettableParameter("slider", "initial_sheep", 25, 0, 100),
-    "initial_wolves": UserSettableParameter("slider", "initial_wolves", 3, 0, 25),
-    "sheep_reproduce": UserSettableParameter("slider", "sheep_reproduce", 0.1, 0, 1, step=1e-3),
-    "wolf_reproduce": UserSettableParameter("slider", "wolf_reproduce", 0.1, 0, 1, step=1e-3),
-    "sheep_gain_from_food": UserSettableParameter("slider", "sheep_gain_from_food", 20, 0, 50),
-    "wolf_gain_from_food": UserSettableParameter("slider", "wolf_gain_from_food", 10, 0, 50),
-    "grass_regrowth_time": UserSettableParameter("slider", "grass_regrowth_time", 30, 0, 50),
+    # Initial parameters
+    "initial_sheep": UserSettableParameter("slider", "Initial number of sheep", 25, 0, 100),
+    "initial_wolves": UserSettableParameter("slider", "Initial number of wolves", 3, 0, 25),
+    # Reproduction
+    "sheep_reproduce": UserSettableParameter("slider", "Probability of sheep reproduction", 0.1, 0, 1, step=5e-3),
+    "wolf_reproduce": UserSettableParameter("slider", "Probability of wolf reproduction", 0.1, 0, 1, step=5e-3),
+    # Eating
+    "sheep_gain_from_food": UserSettableParameter("slider", "Sheep gain from food", 20, 0, 50),
+    "wolf_gain_from_food": UserSettableParameter("slider", "Wolf gain from food", 10, 0, 50),
+    "sheep_max_energy": UserSettableParameter("slider", "Sheep max energy", 50, 30, 100, step=5),
+    "wolf_max_energy": UserSettableParameter("slider", "Wolf max energy", 50, 30, 100, step=5),
+    "sheep_lifespan": UserSettableParameter("slider", "Sheep lifespan", 200, 60, 250, step=5),
+    "wolf_lifespan": UserSettableParameter("slider", "Wolf lifespan", 200, 60, 250, step=5),
+    "grass_regrowth_time": UserSettableParameter("slider", "Grass regrowth time", 30, 0, 50),
 }
 
 canvas_element = CanvasGrid(wolf_sheep_portrayal, 20, 20, 500, 500)
 chart_element = ChartModule(
-    [{"Label": "Wolves (x3)", "Color": "#AA0000"}, {"Label": "Sheep", "Color": "#666666"}]
+    [{"Label": "Wolves (x3)", "Color": "#FF0000"}, {"Label": "Sheep", "Color": "#666666"}]
 )
 
 server = ModularServer(

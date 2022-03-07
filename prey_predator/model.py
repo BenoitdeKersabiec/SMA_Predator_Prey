@@ -33,10 +33,14 @@ class WolfSheep(Model):
     wolf_reproduce = 0.05
 
     wolf_gain_from_food = 20
+    sheep_gain_from_food = 4
+    wolf_max_energy = 50
+    sheep_max_energy = 50
+    wolf_lifespan = 200
+    sheep_lifespan = 200
 
     grass = False
     grass_regrowth_time = 30
-    sheep_gain_from_food = 4
 
     description = (
         "A model for simulating wolf and sheep (predator-prey) ecosystem modelling."
@@ -51,9 +55,13 @@ class WolfSheep(Model):
         sheep_reproduce=0.04,
         wolf_reproduce=0.05,
         wolf_gain_from_food=20,
+        sheep_gain_from_food=4,
+        wolf_max_energy=50,
+        sheep_max_energy=50,
+        wolf_lifespan=200,
+        sheep_lifespan=200,
         grass=False,
         grass_regrowth_time=30,
-        sheep_gain_from_food=4,
     ):
         """
         Create a new Wolf-Sheep model with the given parameters.
@@ -78,9 +86,14 @@ class WolfSheep(Model):
         self.sheep_reproduce = sheep_reproduce
         self.wolf_reproduce = wolf_reproduce
         self.wolf_gain_from_food = wolf_gain_from_food
+        self.sheep_gain_from_food = sheep_gain_from_food
+        self.wolf_max_energy = wolf_max_energy
+        self.sheep_max_energy = sheep_max_energy
+        self.wolf_lifespan = wolf_lifespan
+        self.sheep_lifespan = sheep_lifespan
+
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
-        self.sheep_gain_from_food = sheep_gain_from_food
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
