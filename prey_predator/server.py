@@ -56,13 +56,13 @@ model_params = {
     "height": 20,
     "width": 20,
     "initial_sheep": 100,
-    "initial_wolves": 50,
-    "sheep_reproduce": 0.04,
-    "wolf_reproduce": 0.05,
-    "wolf_gain_from_food": 20,
+    "initial_wolves": 10,
+    "sheep_reproduce": 0.2,
+    "wolf_reproduce": 0.03,
+    "wolf_gain_from_food": 5,
     "grass": False,
-    "grass_regrowth_time": 30,
-    "sheep_gain_from_food": 4,
+    "grass_regrowth_time": 15,
+    "sheep_gain_from_food": 20,
 }
 
 server = ModularServer(

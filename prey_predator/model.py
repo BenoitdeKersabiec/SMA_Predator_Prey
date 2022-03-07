@@ -98,7 +98,7 @@ class WolfSheep(Model):
             
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-            sheep = Sheep(self.current_id, (x, y), self, False, energy=10)
+            sheep = Sheep(self.current_id, (x, y), self, True, energy=10)
             self.schedule.add(sheep)
             # Add the agent to a random grid cell
             self.grid.place_agent(sheep, (x, y))
@@ -108,7 +108,7 @@ class WolfSheep(Model):
         for wolf_id in range(initial_wolves):
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-            wolf = Wolf(self.current_id, (x, y), self, False, energy=50)
+            wolf = Wolf(self.current_id, (x, y), self, True, energy=50)
             self.schedule.add(wolf)
             # Add the agent to a random grid cell
             self.grid.place_agent(wolf, (x, y))

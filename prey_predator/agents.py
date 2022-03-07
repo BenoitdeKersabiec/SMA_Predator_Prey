@@ -21,12 +21,39 @@ class Sheep(RandomWalker):
         A model step. Move, then eat grass and reproduce.
         """
 
-        self.random_move()
+        self.walk()
         self.energy -= 1
         self.eat_grass()
         self.reproduce()
         if self.energy <= 0:
             self.kill()
+
+    def walk(self):
+        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
+
+        # Avoid the woves
+        wolves = []
+        for position in next_moves:
+            for entity in self.model.grid.get_cell_list_contents([position]):
+                if type(entity) is Wolf:
+                    x, y = position
+                    wolves.append((x, y))
+                    wolves.append((x + 1, y))
+                    wolves.append((x, y + 1))
+                    wolves.append((x + 1, y + 1))
+
+        next_moves = list(set(next_moves).difference(set(wolves)))
+        # Seek for grass
+        random.shuffle(next_moves)
+        for move in next_moves:
+            for entity in self.model.grid.get_cell_list_contents([move]):
+                if type(entity) is GrassPatch:
+                    self.model.grid.move_agent(self, move)
+                    return
+
+        next_move = self.random.choice(next_moves)
+        # Now move:
+        self.model.grid.move_agent(self, next_move)
 
     def eat_grass(self):
         for entity in self.model.grid.get_cell_list_contents([self.pos]):
@@ -39,7 +66,7 @@ class Sheep(RandomWalker):
 
     def reproduce(self):
         if random.random() <= self.model.sheep_reproduce:
-            baby = Sheep(self.model.current_id, self.pos, self.model, False, energy=0)
+            baby = Sheep(self.model.current_id, self.pos, self.model, True, energy=0)
             self.model.schedule.add(baby)
             self.model.grid.place_agent(baby, self.pos)
             self.model.current_id += 1
@@ -62,12 +89,25 @@ class Wolf(RandomWalker):
 
     def step(self):
 
-        self.random_move()
+        self.walk()
         self.energy -= 1
         self.eat_sheep()
         self.reproduce()
         if self.energy <= 0:
             self.kill()
+
+    def walk(self):
+        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
+        random.shuffle(next_moves)
+        for move in next_moves:
+            for entity in self.model.grid.get_cell_list_contents([move]):
+                if type(entity) is Sheep:
+                    self.model.grid.move_agent(self, move)
+                    return
+
+        next_move = self.random.choice(next_moves)
+        # Now move:
+        self.model.grid.move_agent(self, next_move)
     
     def eat_sheep(self):
         for entity in self.model.grid.get_cell_list_contents([self.pos]):
@@ -78,15 +118,14 @@ class Wolf(RandomWalker):
 
     def reproduce(self):
         if random.random() <= self.model.wolf_reproduce:
-            baby = Wolf(self.model.current_id, self.pos, self.model, False, energy=0)
+            baby = Wolf(self.model.current_id, self.pos, self.model, True, energy=0)
             self.model.schedule.add(baby)
             self.model.grid.place_agent(baby, self.pos)
             self.model.current_id += 1
 
     def kill(self):
-        if self.unique_id in self.model.schedule._agents:
-            self.model.schedule.remove(self)
-            self.model.grid.remove_agent(self)
+        self.model.schedule.remove(self)
+        self.model.grid.remove_agent(self)
 
 
 
