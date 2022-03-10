@@ -41,6 +41,7 @@ class WolfSheep(Model):
 
     grass = False
     grass_regrowth_time = 30
+    print_every = 1
 
     description = (
         "A model for simulating wolf and sheep (predator-prey) ecosystem modelling."
@@ -58,10 +59,10 @@ class WolfSheep(Model):
         sheep_gain_from_food=4,
         wolf_max_energy=50,
         sheep_max_energy=50,
-        wolf_lifespan=200,
-        sheep_lifespan=200,
         grass=False,
         grass_regrowth_time=30,
+        print_every=1,
+        seed=2022
     ):
         """
         Create a new Wolf-Sheep model with the given parameters.
@@ -89,17 +90,16 @@ class WolfSheep(Model):
         self.sheep_gain_from_food = sheep_gain_from_food
         self.wolf_max_energy = wolf_max_energy
         self.sheep_max_energy = sheep_max_energy
-        self.wolf_lifespan = wolf_lifespan
-        self.sheep_lifespan = sheep_lifespan
 
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
+        self.print_every = print_every
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
         self.datacollector = DataCollector(
             {
-                "Wolves (x3)": lambda m: 3 * m.schedule.get_breed_count(Wolf),
+                "Wolves": lambda m: m.schedule.get_breed_count(Wolf),
                 "Sheep": lambda m: m.schedule.get_breed_count(Sheep),
             }
         )
@@ -111,7 +111,7 @@ class WolfSheep(Model):
             
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-            sheep = Sheep(self.current_id, (x, y), self, True, energy=10)
+            sheep = Sheep(self.current_id, (x, y), self, True, energy=self.sheep_max_energy)
             self.schedule.add(sheep)
             # Add the agent to a random grid cell
             self.grid.place_agent(sheep, (x, y))
@@ -121,7 +121,7 @@ class WolfSheep(Model):
         for wolf_id in range(initial_wolves):
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-            wolf = Wolf(self.current_id, (x, y), self, True, energy=50)
+            wolf = Wolf(self.current_id, (x, y), self, True, energy=self.wolf_max_energy)
             self.schedule.add(wolf)
             # Add the agent to a random grid cell
             self.grid.place_agent(wolf, (x, y))
@@ -137,12 +137,11 @@ class WolfSheep(Model):
                 self.current_id += 1
 
     def step(self):
-        self.schedule.step(by_breed=True)
+        for i in range(self.print_every):
+            self.schedule.step(by_breed=True)
 
         # Collect data
         self.datacollector.collect(self)
-
-        # ... to be completed
 
     def run_model(self, step_count=200):
 

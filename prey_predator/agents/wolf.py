@@ -13,7 +13,6 @@ class Wolf(RandomWalker):
     def __init__(self, unique_id, pos, model, moore, energy=None):
         super().__init__(unique_id, pos, model, moore=moore)
         self.energy = energy
-        self.life_duration = 0
 
     def step(self):
 
@@ -21,9 +20,8 @@ class Wolf(RandomWalker):
         self.energy -= 1
         self.eat_sheep()
         self.reproduce()
-        if self.energy <= 0 or self.life_duration > self.model.wolf_lifespan:
+        if self.energy <= 0:
             self.kill()
-        self.life_duration += 1
 
     def walk(self):
         next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
@@ -40,7 +38,7 @@ class Wolf(RandomWalker):
 
     def eat_sheep(self):
         for entity in self.model.grid.get_cell_list_contents([self.pos]):
-            if type(entity) is agents.Sheep and self.energy < self.model.wolf_max_energy - self.model.wolf_gain_from_food:
+            if type(entity) is agents.Sheep:  # and self.energy < self.model.wolf_max_energy - self.model.wolf_gain_from_food:
                 entity.kill()
                 self.energy += self.model.wolf_gain_from_food
                 continue

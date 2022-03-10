@@ -15,7 +15,6 @@ class Sheep(RandomWalker):
     def __init__(self, unique_id, pos, model, moore, energy=0):
         super().__init__(unique_id, pos, model, moore=moore)
         self.energy = energy
-        self.life_duration = 0
 
     def step(self):
         """
@@ -26,9 +25,8 @@ class Sheep(RandomWalker):
         self.energy -= 1
         self.eat()
         self.reproduce()
-        if self.energy <= 0 or self.life_duration > self.model.sheep_lifespan:
+        if self.energy <= 0:
             self.kill()
-        self.life_duration += 1
 
     def walk(self):
         next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)

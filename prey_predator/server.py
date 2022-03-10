@@ -5,6 +5,13 @@ from mesa.visualization.UserParam import UserSettableParameter
 from prey_predator.agents import Wolf, Sheep, GrassPatch
 from prey_predator.model import WolfSheep
 
+import random
+import numpy as np
+
+seed = 2022
+random.seed(seed)
+np.random.seed(seed)
+
 
 def wolf_sheep_portrayal(agent):
     if agent is None:
@@ -55,18 +62,19 @@ model_params = {
     "sheep_reproduce": UserSettableParameter("slider", "Probability of sheep reproduction", 0.1, 0, 1, step=5e-3),
     "wolf_reproduce": UserSettableParameter("slider", "Probability of wolf reproduction", 0.1, 0, 1, step=5e-3),
     # Eating
-    "sheep_gain_from_food": UserSettableParameter("slider", "Sheep gain from food", 20, 0, 50),
+    "sheep_gain_from_food": UserSettableParameter("slider", "Sheep gain from food", 6, 0, 50),
     "wolf_gain_from_food": UserSettableParameter("slider", "Wolf gain from food", 10, 0, 50),
-    "sheep_max_energy": UserSettableParameter("slider", "Sheep max energy", 50, 30, 100, step=5),
-    "wolf_max_energy": UserSettableParameter("slider", "Wolf max energy", 50, 30, 100, step=5),
-    "sheep_lifespan": UserSettableParameter("slider", "Sheep lifespan", 200, 60, 250, step=5),
-    "wolf_lifespan": UserSettableParameter("slider", "Wolf lifespan", 200, 60, 250, step=5),
+    "sheep_max_energy": UserSettableParameter("slider", "Sheep max energy", 75, 30, 100, step=5),
+    "wolf_max_energy": UserSettableParameter("slider", "Wolf max energy", 100, 30, 100, step=5),
     "grass_regrowth_time": UserSettableParameter("slider", "Grass regrowth time", 30, 0, 50),
+    "print_every": UserSettableParameter("slider", "Print every", 5, 0, 50)
 }
 
 canvas_element = CanvasGrid(wolf_sheep_portrayal, 20, 20, 500, 500)
 chart_element = ChartModule(
-    [{"Label": "Wolves (x3)", "Color": "#FF0000"}, {"Label": "Sheep", "Color": "#666666"}]
+    [{"Label": "Wolves", "Color": "#FF0000"}, {"Label": "Sheep", "Color": "#666666"}],
+    canvas_height=400,
+    canvas_width=1000
 )
 
 server = ModularServer(
