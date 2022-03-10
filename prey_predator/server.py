@@ -65,8 +65,8 @@ model_params = {
     "sheep_gain_from_food": UserSettableParameter("slider", "Sheep gain from food", 6, 0, 50),
     "wolf_gain_from_food": UserSettableParameter("slider", "Wolf gain from food", 10, 0, 50),
     "sheep_max_energy": UserSettableParameter("slider", "Sheep max energy", 75, 30, 100, step=5),
-    "wolf_max_energy": UserSettableParameter("slider", "Wolf max energy", 100, 30, 100, step=5),
-    "grass_regrowth_time": UserSettableParameter("slider", "Grass regrowth time", 30, 0, 50),
+    "wolf_max_energy": UserSettableParameter("slider", "Wolf initial energy", 100, 30, 100, step=5),
+    "grass_regrowth_time": UserSettableParameter("slider", "Grass initial energy", 30, 0, 50),
     "print_every": UserSettableParameter("slider", "Print every", 5, 0, 50)
 }
 
